@@ -1,0 +1,29 @@
+/* ODS Styles - Incentiva Data */
+.ods-checkbox {
+  border-radius: 6px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.85rem;
+  color: #fff;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.ods-1 { background: #E5233D; }
+.ods-2 { background: #DDA73A; }
+.ods-3 { background: #4CA146; }
+.ods-4 { background: #C5192D; }
+.ods-5 { background: #EF402C; }
+.ods-6 { background: #27BFE6; }
+.ods-7 { background: #FBC412; }
+.ods-8 { background: #A31C44; }
+.ods-9 { background: #F26A2D; }
+.ods-10 { background: #E01483; }
+.ods-11 { background: #F89D2A; }
+.ods-12 { background: #BF8D2C; }
+.ods-13 { background: #407F46; }
+.ods-14 { background: #1F97D4; }
+.ods-15 { background: #59BA48; }
+.ods-16 { background: #126A9F; }
+.ods-17 { background: #13496B; }

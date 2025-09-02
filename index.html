@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incentiva Data - Conectando Empresas e OSCs</title>
+  <style>
+    /* ===== RESET E BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body.dark-theme {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+    }
+
+    /* ===== HEADER ===== */
+    .app-header {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      height: 70px;
+    }
+
+    body.dark-theme .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-bottom: 1px solid #334155;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .app-logo img {
+      height: 120px;
+      width: auto;
+    }
+
+    .navigation-menu, .auth-menu {
+      gap: 0.5rem;
+      height: 130%;
+      align-items: center;
+      display: flex;
+    }
+
+    .nav-link, .auth-link {
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: none;
+    }
+
+    .nav-link:hover, .auth-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .nav-link--active, .auth-link--register {
+      background: #49a376;
+      box-shadow: 0 4px 12px rgba(73, 163, 118, 0.3);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero-section {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      padding: 6rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark-theme .hero-section {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 3rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #F4A460 0%, #EECD86 100%);
+      color: white;
+      padding: 1.2rem 3rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 8px 25px rgba(244, 164, 96, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(244, 164, 96, 0.4);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== SECTIONS ===== */
+    .news-section, .solutions-section, .about-section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #6195C5;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    body.dark-theme .section-title {
+      color: #EECD86;
+    }
+
+    /* ===== GRIDS ===== */
+    .news-grid, .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    /* ===== CARDS ===== */
+    .news-card, .solution-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(97, 149, 197, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    body.dark-theme .news-card,
+    body.dark-theme .solution-card {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .news-card:hover, .solution-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-theme .news-card:hover,
+    body.dark-theme .solution-card:hover {
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .news-card h3, .solution-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-theme .news-card h3,
+    body.dark-theme .solution-card h3 {
+      color: #EECD86;
+    }
+
+    .news-card p, .solution-card p {
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    body.dark-theme .news-card p,
+    body.dark-theme .solution-card p {
+      color: #cbd5e1;
+    }
+
+    .solution-card {
+      text-align: center;
+    }
+
+    .solution-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .solution-button {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .solution-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(97, 149, 197, 0.3);
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    .about-section {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(97, 149, 197, 0.1);
+      text-align: center;
+    }
+
+    body.dark-theme .about-section {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      color: #64748b;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    body.dark-theme .about-section p {
+      color: #cbd5e1;
+    }
+
+    .value-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 12px;
+      border: 1px solid rgba(97, 149, 197, 0.1);
+    }
+
+    body.dark-theme .value-item {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-color: #334155;
+    }
+
+    .value-item h4 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 0.5rem;
+    }
+
+    body.dark-theme .value-item h4 {
+      color: #EECD86;
+    }
+
+    .value-item p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    body.dark-theme .value-item p {
+      color: #cbd5e1;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: linear-gradient(135deg, #1b72a0 0%, #0097b2 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    body.dark-theme .footer {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-top: 1px solid #334155;
+    }
+
+    /* ===== MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 400px;
+      margin: 5vh auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    body.dark-theme .modal-content {
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    body.dark-theme .modal-close {
+      color: #cbd5e1;
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    body.dark-theme .modal-title {
+      color: #EECD86;
+    }
+
+    /* ===== FORMS ===== */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #6195C5;
+    }
+
+    body.dark-theme .form-label {
+      color: #EECD86;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid rgba(97, 149, 197, 0.2);
+      border-radius: 8px;
+      background: #ffffff;
+      color: #1e293b;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-theme .form-input,
+    body.dark-theme .form-select {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #6195C5;
+      box-shadow: 0 0 0 3px rgba(97, 149, 197, 0.1);
+    }
+
+    body.dark-theme .form-input:focus,
+    body.dark-theme .form-select:focus {
+      border-color: #EECD86;
+      box-shadow: 0 0 0 3px rgba(238, 205, 134, 0.15);
+    }
+
+    .form-button {
+      width: 100%;
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: #ffffff;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(97, 149, 197, 0.3);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 992px) {
+      .app-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+      }
+
+      .auth-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero-title {
+        font-size: 2.75rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .main-content {
+        padding: 2rem 1rem;
+      }
+
+      .news-grid, .solutions-grid, .values-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .navigation-menu, .auth-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .page-container, .main-content {
+        padding: 1rem;
+      }
+
+      .page-title, .hero-title, .section-title {
+        font-size: 2rem;
+      }
+
+      .stats-grid, .news-grid, .solutions-grid, .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .looker-section, .about-section {
+        padding: 1.5rem;
+      }
+
+      .looker-container {
+        height: 400px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .action-button {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid, .news-grid, .solutions-grid, .values-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .looker-container {
+        height: 350px;
+      }
+
+      .stat-card, .news-card, .solution-card, .about-section {
+        padding: 1.5rem;
+      }
+
+      .looker-section, .about-section {
+        padding: 1rem;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stat-card, .looker-section, .next-steps-section, .news-section, .solutions-section, .about-section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .stat-card:nth-child(2), .solutions-section {
+      animation-delay: 0.1s;
+    }
+
+    .stat-card:nth-child(3), .about-section {
+      animation-delay: 0.2s;
+    }
+
+    .stat-card:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+
+    .looker-section {
+      animation-delay: 0.4s;
+    }
+
+    .next-steps-section {
+      animation-delay: 0.5s;
+    }
+
+    /* ===== GRIDS ===== */
+
+    .news-grid, .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    /* ===== CARDS ===== */
+    .news-card, .solution-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(97, 149, 197, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    body.dark-theme .news-card,
+    body.dark-theme .solution-card {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .news-card:hover, .solution-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-theme .news-card:hover,
+    body.dark-theme .solution-card:hover {
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .news-card h3, .solution-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-theme .news-card h3,
+    body.dark-theme .solution-card h3 {
+      color: #EECD86;
+    }
+
+    .news-card p, .solution-card p {
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    body.dark-theme .news-card p,
+    body.dark-theme .solution-card p {
+      color: #cbd5e1;
+    }
+
+    .solution-card {
+      text-align: center;
+    }
+
+    .solution-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .solution-button {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .solution-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(97, 149, 197, 0.3);
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    .about-section {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(97, 149, 197, 0.1);
+      text-align: center;
+    }
+
+    body.dark-theme .about-section {
+      background: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      color: #64748b;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    body.dark-theme .about-section p {
+      color: #cbd5e1;
+    }
+
+    .value-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border-radius: 12px;
+      border: 1px solid rgba(97, 149, 197, 0.1);
+    }
+
+    body.dark-theme .value-item {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-color: #334155;
+    }
+
+    .value-item h4 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 0.5rem;
+    }
+
+    body.dark-theme .value-item h4 {
+      color: #EECD86;
+    }
+
+    .value-item p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    body.dark-theme .value-item p {
+      color: #cbd5e1;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    body.dark-theme .footer {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-top: 1px solid #334155;
+    }
+
+    /* ===== MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 400px;
+      margin: 5vh auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    body.dark-theme .modal-content {
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    body.dark-theme .modal-close {
+      color: #cbd5e1;
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #6195C5;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    body.dark-theme .modal-title {
+      color: #EECD86;
+    }
+
+    /* ===== FORMS ===== */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #6195C5;
+    }
+
+    body.dark-theme .form-label {
+      color: #EECD86;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid rgba(97, 149, 197, 0.2);
+      border-radius: 8px;
+      background: #ffffff;
+      color: #1e293b;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    body.dark-theme .form-input,
+    body.dark-theme .form-select {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #6195C5;
+      box-shadow: 0 0 0 3px rgba(97, 149, 197, 0.1);
+    }
+
+    body.dark-theme .form-input:focus,
+    body.dark-theme .form-select:focus {
+      border-color: #EECD86;
+      box-shadow: 0 0 0 3px rgba(238, 205, 134, 0.15);
+    }
+
+    .form-button {
+      width: 100%;
+      background: linear-gradient(135deg, #6195C5 0%, #AFCBF3 100%);
+      color: #ffffff;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(97, 149, 197, 0.3);
+    }
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 992px) {
+      .app-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+      }
+
+      .auth-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero-title {
+        font-size: 2.75rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .main-content {
+        padding: 2rem 1rem;
+      }
+
+      .news-grid, .solutions-grid, .values-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 3rem 1rem;
+      }
+
+      .hero-title {
+        font-size: 1.75rem;
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+      }
+
+      .news-card, .solution-card, .about-section {
+        padding: 1rem;
+      }
+
+      .modal-content {
+        margin: 5vh auto;
+        padding: 1.5rem 1rem;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .news-section, .solutions-section, .about-section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .solutions-section {
+      animation-delay: 0.2s;
+    }
+
+    .about-section {
+      animation-delay: 0.4s;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-logo">
+      <img src="Estilos\logo\LogoIncentivaData.png" alt="Logo Incentiva Data">
+    </div>
+    <nav class="auth-menu">
+      <button class="auth-link auth-link--login" onclick="openModal('loginModal')">Entrar</button>
+      <button class="auth-link auth-link--register" onclick="openModal('registerModal')">Cadastrar</button>
+      <button id="toggleTheme" class="theme-toggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Conectamos empresas a causas sociais</h1>
+      <p class="hero-subtitle">O match perfeito entre branding e impacto social. Transforme sua estratégia ESG em resultados reais.</p>
+      <button class="cta-button" onclick="openModal('registerModal')">Começar agora</button>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- NOTÍCIAS E ATUALIZAÇÕES -->
+    <section class="news-section">
+      <h2 class="section-title">Notícias e Atualizações</h2>
+      <div class="news-grid">
+        <div class="news-card">
+          <h3>Criminalização Burocrática: Como o excesso de papéis sufoca as ONGs no Brasil</h3>
+          <p>
+            Especialistas apontam que as ONGs brasileiras enfrentam uma verdadeira “criminalização burocrática”, onde normas excessivas e interpretadas fora de contexto dificultam registro, concessão de isenções e parcerias com o Estado. A desconfiança alimentada por discursos políticos ainda afugenta doadores, tornando o ambiente jurídico do terceiro setor inóspito e ameaçando a sustentabilidade dessas entidades.
+          </p>
+          <p>
+            Fonte: <a href="https://www1.folha.uol.com.br/folha-social-mais/2024/12/burocracia-excessiva-dificulta-atuacao-de-ongs-no-brasil-avaliam-especialistas.shtml" target="_blank" style="color: #6195C5; text-decoration: none;">Folha de São Paulo</a>
+          </p>
+        </div>
+        <div class="news-card">
+          <h3>7 milhões de voluntários em ação: ONGs ampliam impacto e transformam realidades</h3>
+          <p>
+            Segundo dados da PNAD Contínua de 2022, o Brasil contava com mais de 7 milhões de voluntários, um aumento de mais de 600 mil pessoas em relação a 2019. AS ONGs têm sido peças-chave nessa transformação social, desenvolvendo iniciativas que promovem inclusão, cidadania e desenvolvimento. A atuação de profissionais como Letícia de Freitas Caruso evidencia como engajamento individual gera impacto coletivo capaz de mudar vidas e fortalecer comunidades
+          </p>
+          <p>
+            Fonte: <a href="https://www.em.com.br/mundo-corporativo/2025/03/7088541-ongs-transformam-comunidades-e-ampliam-impacto-social.html" target="_blank" style="color: #6195C5; text-decoration: none;">Estado de Minas</a>
+        </div>
+        <div class="news-card">
+          <h3>NSinal Vermelho: Doações caem 67% e ameaçam sustentabilidade de 800 mil OSCs</h3>
+          <p>Em 2023, as doações para organizações sociais despencaram 67% em relação a 2022, totalizando apenas R$ 474,9 milhões — ante R$ 1,4 bilhão anteriormente — de acordo com o Monitor das Doações da ABCR com apoio do GIFE. O número de doadores também caiu quase 60%, de 397 para apenas 158. Este cenário preocupante compromete o funcionamento de cerca de 800 mil entidades que dependem da generosidade da sociedade.</p>
+          <p>
+            Fonte: <a href="https://diariodocomercio.com.br/economia/doacoes-em-queda-desafiam-instituicoes-sociais/" target="_blank" style="color: #6195C5; text-decoration: none;">Diário do Comercio</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUÇÕES PARA CADA PERFIL -->
+    <section class="solutions-section">
+      <h2 class="section-title">Soluções para cada perfil</h2>
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <div class="solution-icon">🏢</div>
+          <h3>Para Empresas</h3>
+          <p>Conecte-se com OSCs alinhadas aos seus valores e objetivos ESG. Monitore o impacto das suas doações.</p>
+          <button class="solution-button" onclick="openModal('registerModal')">Cadastrar Empresa</button>
+        </div>
+        <div class="solution-card">
+          <div class="solution-icon">👤</div>
+          <h3>Para Pessoas Físicas</h3>
+          <p>Faça a diferença apoiando causas que importam para você. Acompanhe o impacto das suas contribuições.</p>
+          <button class="solution-button" onclick="openModal('registerModal')">Cadastrar Pessoa</button>
+        </div>
+        <div class="solution-card">
+          <div class="solution-icon">🤝</div>
+          <h3>Para OSCs</h3>
+          <p>Conecte-se com doadores alinhados à sua causa. Gerencie doações e comprove o impacto dos seus projetos.</p>
+          <button class="solution-button" onclick="openModal('registerModal')">Cadastrar OSC</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE A INCENTIVA DATA -->
+    <section class="about-section">
+      <h2 class="section-title">Sobre a Incentiva Data</h2>
+      <p>A Incentiva Data conecta empresas a OSCs com necessidades de financiamento, criando o match perfeito entre branding corporativo e impacto social.</p>
+      <div class="values-grid">
+        <div class="value-item">
+          <h4>🎯 Missão</h4>
+          <p>Conectar empresas e OSCs com transparência e inovação, transformando doações em impacto social real.</p>
+        </div>
+        <div class="value-item">
+          <h4>👁️ Visão</h4>
+          <p>Ser a ponte que democratiza o investimento social privado, tornando o Brasil referência em doações inteligentes, sustentáveis, potencializando o marketing e avanço socioeconômico.</p>
+        </div>
+        <div class="value-item">
+          <h4>⚖️ Valores</h4>
+          <p>
+
+          </p>
+          <p>
+            🌍 Transparência
+            🤝 Parceria
+            💡 Inovação
+            💚 Impacto Social
+            🔒 Confiança
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© <strong>Incentiva Data</strong> · Conectando empresas a causas sociais</p>
+    <p>Transformando investimentos em impacto social sustentável</p>
+  </footer>
+
+  <!-- MODAIS -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+      <h2 class="modal-title">Entrar na Plataforma</h2>
+      <form id="loginForm">
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com" required>
+        
+        <label for="loginPassword">Senha:</label>
+        <input type="password" id="loginPassword" class="form-input" placeholder="******" required>
+        
+        <button type="submit" class="form-button">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+      <h2 class="modal-title">Cadastrar na Plataforma</h2>
+      <form id="registerForm">
+        <label for="userType">Tipo de Usuário:</label>
+        <select id="userType" required>
+          <option value="">Selecione o tipo</option>
+          <option value="empresa">🏢 Empresa</option>
+          <option value="pessoa">👤 Pessoa Física</option>
+          <option value="osc">🤝 OSC</option>
+        </select>
+        
+        <label for="registerName">Nome/Razão Social:</label>
+        <input type="text" id="registerName" class="form-input" placeholder="Seu nome ou razão social" required>
+        
+        <label for="registerEmail">Email:</label>
+        <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com" required>
+        
+        <label for="registerPassword">Senha:</label>
+        <input type="password" id="registerPassword" class="form-input" placeholder="******" required>
+        
+        <button type="submit" class="form-button">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Sistema de tema claro/escuro
+    const toggleTheme = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    // Carregar preferência salva
+    if (localStorage.getItem('theme') === 'dark') {
+      body.classList.add('dark-theme');
+      toggleTheme.textContent = '☀️';
+    }
+
+    toggleTheme.addEventListener('click', () => {
+      body.classList.toggle('dark-theme');
+      
+      if (body.classList.contains('dark-theme')) {
+        toggleTheme.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        toggleTheme.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Funções de modal
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Fechar modal clicando fora
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        e.target.style.display = 'none';
+      }
+    });
+
+    // Lógica de Login
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      // Simulação de autenticação
+      if (email === 'empresa@teste.com' && password === '123456') {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userType', 'empresa');
+        alert('Login de Empresa bem-sucedido!');
+        window.location.href = 'Paginas/dashboard.html';
+      } else if (email === 'osc@teste.com' && password === '123456') {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userType', 'osc');
+        alert('Login de OSC bem-sucedido!');
+        window.location.href = 'Paginas/dashboard.html';
+      } else if (email === 'pessoa@teste.com' && password === '123456') {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userType', 'pessoa');
+        alert('Login de Pessoa Física bem-sucedido!');
+        window.location.href = 'Paginas/dashboard.html';
+      } else {
+        alert('E-mail ou senha incorretos. Tente: empresa@teste.com, osc@teste.com ou pessoa@teste.com com senha 123456');
+      }
+    });
+
+    // Lógica de Cadastro
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userType = document.getElementById('userType').value;
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+
+      if (userType === '') {
+        alert('Por favor, selecione o tipo de usuário.');
+        return;
+      }
+
+      // Simulação de cadastro
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userEmail', email);
+      
+      alert(`Cadastro de ${userType.toUpperCase()} realizado com sucesso!`);
+      window.location.href = 'Paginas/dashboard.html';
+    });
+  </script>
+</body>
+</html>
+
