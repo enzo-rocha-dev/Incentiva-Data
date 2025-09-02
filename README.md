@@ -33,7 +33,7 @@ A proposta do MVP é validar o fluxo de **doação simplificada**, **split de pa
     └── logo/                 # Logos da empresa
         ├── LogoIncentivaData.png
         └── LogoIncentivaData-Simples.png
-
+```
 ---
 
 ## 🎯 Funcionalidades do MVP
